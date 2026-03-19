@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MAIN GO Courier</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; background:#f4f4f4; }
+header { background:#2c3e50; color:white; padding:20px; text-align:center; position:relative; overflow:hidden;}
+header h1 { margin:0; font-size:2em; display:inline-block; position:relative; }
+header h1 img.cartoon { height:50px; vertical-align:middle; margin:0 10px;}
+header p.subtitle { margin:5px 0 0; font-size:1.2em; }
+header p.slogan { font-style:italic; color:#16a085; font-size:1.1em; margin:5px 0 10px;}
+nav { background:#34495e; padding:10px; text-align:center; display:none; }
+nav button { margin:5px; padding:10px 15px; border:none; border-radius:5px; background:#1abc9c; color:white; cursor:pointer; transition:0.3s;}
+nav button:hover { background:#16a085; }
+section { display:none; padding:30px; }
+.active { display:block; }
+input, button, select { padding:10px; margin:5px 0; border-radius:5px; border:1px solid #ccc; width:95%; }
+button { background:#1abc9c; color:white; border:none; cursor:pointer; transition:0.3s; }
+button:hover { background:#16a085; }
+.box { background:white; padding:20px; margin:20px 0; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+#langSelect { position:absolute; top:20px; right:20px; padding:5px; border-radius:5px;}
+h2, h3 { color:#2c3e50; }
+.partner, .stakeholder { background:#1abc9c; color:white; padding:10px; margin:10px 0; border-radius:8px; text-align:center; box-shadow:0 1px 5px rgba(0,0,0,0.2);}
+h2.welcome { text-align:center; color:#16a085; }
+p.welcomeText { text-align:center; font-size:1.1em; color:#34495e; }
+/* Exhaust cloud behind GO */
+.exhaust {
+  position:absolute;
+  top:10px;
+  left:50%;
+  width:40px;
+  height:15px;
+  background: radial-gradient(circle, #fff 20%, transparent 70%);
+  filter: blur(8px);
+  animation: puff 1s infinite alternate;
+  z-index:-1;
+}
+@keyframes puff {
+  0% { transform: translateX(0) scale(1); opacity:0.6; }
+  100% { transform: translateX(20px) scale(1.2); opacity:0.2; }
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1 id="title">
+  MAIN 
+  <img src="https://i.ibb.co/6nVzN7m/cartoon-globe-guy.png" alt="Guy carrying globe" class="cartoon">
+  <span style="position:relative; display:inline-block;">
+    GO
+    <span class="exhaust"></span>
+  </span>
+</h1>
+<p class="subtitle" id="subtitle">Fast & Reliable Delivery</p>
+<p class="slogan">Bringing Your World Closer</p>
+<select id="langSelect" onchange="changeLanguage()">
+  <option value="en">English</option>
+  <option value="fr">Français</option>
+  <option value="es">Español</option>
+</select>
+</header>
+
+<nav id="mainNav">
+<button onclick="showPage('home')"><span id="navHome">Home</span></button>
+<button onclick="showPage('send')"><span id="navSend">Send Parcel</span></button>
+<button onclick="showPage('track')"><span id="navTrack">Track Parcel</span></button>
+</nav>
+
+<!-- PHASE 1: REGISTER -->
+<section id="register" class="active">
+<div class="box">
+<h2 id="registerTitle">Register</h2>
+<input type="text" id="regName" placeholder="Name"><br>
+<input type="email" id="regEmail" placeholder="Email"><br>
+<input type="text" id="regPhone" placeholder="Phone Number"><br>
+<input type="password" id="regPass" placeholder="Password"><br>
+<button onclick="sendVerificationCode()"><span id="regBtn">Register</span></button>
+
+<div id="verifySection" style="display:none;">
+<p id="verifyText">Enter the verification code sent to your email:</p>
+<input type="text" id="verifyCodeInput" placeholder="Enter code">
+<button onclick="verifyEmailCode()">Verify</button>
+</div>
+<p id="regResult"></p>
+</div>
+</section>
+
+<!-- PHASE 2: LOGIN -->
+<section id="login">
+<div class="box">
+<h2 id="loginTitle">Login</h2>
+<input type="email" id="loginEmail" placeholder="Email"><br>
+<input type="password" id="loginPass" placeholder="Password"><br>
+<button onclick="loginUser()"><span id="loginBtn">Login</span></button>
+<p id="loginResult"></p>
+</div>
+</section>
+
+<!-- PHASE 3: HOME -->
+<section id="home">
+  <div class="box">
+    <h2 class="welcome" id="homeTitle">Welcome to MAIN GO!</h2>
+    <p class="welcomeText" id="homeText">At MAIN GO, your parcels are our priority. We promise fast, secure, and reliable delivery, connecting with our customers every step of the way!</p>
+  </div>
+
+  <!-- Partners Section -->
+  <div class="box">
+    <h3 id="partnersTitle">Our Partners</h3>
+    <div>
+      <p class="partner">FastShip Inc.</p>
+      <p class="partner">GlobalCouriers</p>
+      <p class="partner">QuickLogistics</p>
+    </div>
+  </div>
+
+  <!-- Stakeholders Section -->
+  <div class="box">
+    <h3 id="stakeholdersTitle">Our Stakeholders</h3>
+    <div>
+      <p class="stakeholder">CEO: Chris Matidza</p>
+      <p class="stakeholder">CFO: Masiya</p>
+      <p class="stakeholder">Marketing: Maingo</p>
+      <p class="stakeholder">Director General: Keneilwe</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEND PARCEL -->
+<section id="send">
+<div class="box">
+<h2 id="sendTitle">Send Parcel</h2>
+<input type="text" id="sender" placeholder="Sender Name"><br>
+<input type="text" id="receiver" placeholder="Receiver Name"><br>
+<input type="text" id="address" placeholder="Delivery Address"><br>
+<button onclick="sendParcel()"><span id="sendBtn">Send Parcel</span></button>
+<p id="trackingResult"></p>
+</div>
+</section>
+
+<!-- TRACK PARCEL -->
+<section id="track">
+<div class="box">
+<h2 id="trackTitle">Track Parcel</h2>
+<input type="text" id="trackID" placeholder="Enter Tracking Number">
+<button onclick="trackParcel()"><span id="trackBtn">Track</span></button>
+<p id="statusResult"></p>
+</div>
+</section>
+
+<script>
+// --- Storage ---
+let parcels = {};
+let users = {};
+let currentUser = null;
+let tempUser = null;
+let emailVerificationCode = null;
+
+// --- Show Page ---
+function showPage(page){
+  document.querySelectorAll("section").forEach(sec=>sec.classList.remove("active"));
+  document.getElementById(page).classList.add("active");
+}
+
+// --- Simple Password Hash ---
+function hashPassword(p){let hash=0;for(let i=0;i<p.length;i++){hash=((hash<<5)-hash)+p.charCodeAt(i);hash=hash & hash;} return hash;}
+
+// --- Registration Verification ---
+function sendVerificationCode(){
+  let name=document.getElementById("regName").value;
+  let email=document.getElementById("regEmail").value;
+  let phone=document.getElementById("regPhone").value;
+  let pass=document.getElementById("regPass").value;
+  if(!name||!email||!phone||!pass){alert("Fill all fields");return;}
+  if(users[email]){alert("Email already registered");return;}
+  tempUser={name,email,phone,passwordHash:hashPassword(pass)};
+  emailVerificationCode=Math.floor(100000+Math.random()*900000);
+  alert("For demo purposes, your verification code is: "+emailVerificationCode);
+  document.getElementById("verifySection").style.display="block";
+}
+
+function verifyEmailCode(){
+  let code=document.getElementById("verifyCodeInput").value;
+  if(code==emailVerificationCode){
+    users[tempUser.email]=tempUser;
+    tempUser=null; emailVerificationCode=null;
+    document.getElementById("regResult").innerHTML="Registration successful! Please login.";
+    document.getElementById("verifySection").style.display="none";
+    document.getElementById("regName").value=""; document.getElementById("regEmail").value=""; document.getElementById("regPhone").value=""; document.getElementById("regPass").value=""; document.getElementById("verifyCodeInput").value="";
+    showPage('login'); // Phase 2
+  } else { alert("Invalid verification code"); }
+}
+
+// --- Login ---
+function loginUser(){
+  let email=document.getElementById("loginEmail").value;
+  let pass=document.getElementById("loginPass").value;
+  if(users[email] && users[email].passwordHash===hashPassword(pass)){
+    currentUser=email;
+    document.getElementById("loginResult").innerHTML="Welcome, "+users[email].name+"!";
+    showPage('home'); // Phase 3
+    document.getElementById("mainNav").style.display="block";
+  } else { document.getElementById("loginResult").innerHTML="Invalid email or password"; }
+}
+
+// --- Send Parcel ---
+function generateTracking(){return "MG"+Math.floor(Math.random()*100000);}
+function sendParcel(){
+  if(!currentUser){alert("Login first");return;}
+  let sender=document.getElementById("sender").value;
+  let receiver=document.getElementById("receiver").value;
+  let address=document.getElementById("address").value;
+  if(!sender||!receiver||!address){alert("Fill all fields");return;}
+  let tracking=generateTracking();
+  parcels[tracking]={sender,receiver,address,status:"In Transit"};
+  document.getElementById("trackingResult").innerHTML="Tracking Number: <b>"+tracking+"</b>";
+  document.getElementById("sender").value=""; document.getElementById("receiver").value=""; document.getElementById("address").value="";
+}
+
+// --- Track Parcel ---
+function trackParcel(){
+  let id=document.getElementById("trackID").value;
+  if(parcels[id]){document.getElementById("statusResult").innerHTML="Status: <b>"+parcels[id].status+"</b>";}
+  else{document.getElementById("statusResult").innerHTML="Parcel not found";}
+}
+
+// --- Language Support ---
+const translations={
+en:{title:"MAIN GO Courier System", subtitle:"Fast & Reliable Delivery",
+navHome:"Home", navRegister:"Register", navLogin:"Login", navSend:"Send Parcel", navTrack:"Track Parcel",
+homeTitle:"Welcome to MAIN GO!", homeText:"At MAIN GO, your parcels are our priority. We promise fast, secure, and reliable delivery, connecting with our customers every step of the way!",
+partnersTitle:"Our Partners", stakeholdersTitle:"Our Stakeholders",
+registerTitle:"Register", regBtn:"Register", loginTitle:"Login", loginBtn:"Login",
+sendTitle:"Send Parcel", sendBtn:"Send Parcel", trackTitle:"Track Parcel", trackBtn:"Track"},
+fr:{title:"MAIN GO Système de messagerie", subtitle:"Livraison rapide et fiable",
+navHome:"Accueil", navRegister:"Inscription", navLogin:"Connexion", navSend:"Envoyer colis", navTrack:"Suivre colis",
+homeTitle:"Bienvenue chez MAIN GO!", homeText:"Chez MAIN GO, vos colis sont notre priorité. Nous promettons une livraison rapide, sécurisée et fiable, en nous connectant avec nos clients à chaque étape!",
+partnersTitle:"Nos Partenaires", stakeholdersTitle:"Nos Parties Prenantes",
+registerTitle:"Inscription", regBtn:"S'inscrire", loginTitle:"Connexion", loginBtn:"Se connecter",
+sendTitle:"Envoyer colis", sendBtn:"Envoyer", trackTitle:"Suivre colis", trackBtn:"Suivre"},
+es:{title:"Sistema de mensajería MAIN GO", subtitle:"Entrega rápida y confiable",
+navHome:"Inicio", navRegister:"Registrarse", navLogin:"Iniciar sesión", navSend:"Enviar paquete", navTrack:"Rastrear paquete",
+homeTitle:"Bienvenido a MAIN GO!", homeText:"En MAIN GO, sus paquetes son nuestra prioridad. Prometemos una entrega rápida, segura y confiable, conectándonos con nuestros clientes en cada paso!",
+partnersTitle:"Nuestros Socios", stakeholdersTitle:"Nuestros Interesados",
+registerTitle:"Registrarse", regBtn:"Registrarse", loginTitle:"Iniciar sesión", loginBtn:"Entrar",
+sendTitle:"Enviar paquete", sendBtn:"Enviar", trackTitle:"Rastrear paquete", trackBtn:"Rastrear"}
+};
+
+function changeLanguage(){
+  let lang=document.getElementById("langSelect").value;
+  for(let id in translations[lang]){if(document.getElementById(id)) document.getElementById(id).innerHTML=translations[lang][id];}
+}
+</script>
+
+</body>
+</html>
